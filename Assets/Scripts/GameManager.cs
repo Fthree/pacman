@@ -3,20 +3,23 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    public GhostHandler ghostHandler;
-    public PacmanHandler pacmanHandler;
-    public MazeHandler mazeHandler;
+    public StateHandler stateHandler;
+    private StateHandler stateInstance;
 
     // Use this for initialization
     void Start () {
+        stateInstance = Instantiate(stateHandler) as StateHandler;
+        stateHandler.Initialize(Exit);
+    }
 
-        //ghostHandler.Initialize();
-        pacmanHandler.Initialize();
-        mazeHandler.Initialize();
+    void Exit()
+    {
+        Destroy(stateInstance.gameObject);
+        Application.Quit();
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
+        stateHandler.Update();
 	}
 }

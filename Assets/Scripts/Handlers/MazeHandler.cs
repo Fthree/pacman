@@ -4,7 +4,7 @@ using System.Collections;
 public class MazeHandler : MonoBehaviour {
 
     public Maze mazePrefab;
-    private Maze mazeInstance;
+    private Maze maze;
 
     private MazeCoordinatesDto coordinates;
 
@@ -12,14 +12,20 @@ public class MazeHandler : MonoBehaviour {
 
     // Use this for initialization
     public void Initialize() {
-        mazeInstance = Instantiate(mazePrefab) as Maze;
+        maze = Instantiate(mazePrefab) as Maze;
 
         coordinates = MazeUtil.getMazeCoordinates();
-        pacDotHandler.Initialize(coordinates.pacDotCoordinates, mazeInstance.transform);
+        pacDotHandler.Initialize(coordinates.pacDotCoordinates, maze.transform);
     }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void Destroy()
+    {
+        Destroy(maze.gameObject);
+        pacDotHandler.Destroy();
+    }
 }

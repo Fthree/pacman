@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class GhostHandler : MonoBehaviour {
 
@@ -8,66 +9,62 @@ public class GhostHandler : MonoBehaviour {
     public Ghost pinkyPrefab;
     public Ghost clydePrefab;
 
-    private Ghost blinkyInstance;
-    private Ghost inkyInstance;
-    private Ghost pinkyInstance;
-    private Ghost clydeInstance;
+    private Ghost blinky;
+    private Ghost inky;
+    private Ghost pinky;
+    private Ghost clyde;
 
     public WaypointHandler waypointHandler;
     private WaypointHandler waypointHandlerInstance;
 
-    private List<Ghost> ghosts = new List<Ghost>();
-
-    public bool disabled = false;
+    private List<Ghost> ghosts;
 
     public void Initialize () {
-        blinkyInstance = Instantiate(blinkyPrefab) as Ghost;
-        inkyInstance = Instantiate(inkyPrefab) as Ghost;
-        pinkyInstance = Instantiate(pinkyPrefab) as Ghost;
-        clydeInstance = Instantiate(clydePrefab) as Ghost;
+        ghosts = new List<Ghost>();
+        blinky = Instantiate(blinkyPrefab) as Ghost;
+        inky = Instantiate(inkyPrefab) as Ghost;
+        pinky = Instantiate(pinkyPrefab) as Ghost;
+        clyde = Instantiate(clydePrefab) as Ghost;
         waypointHandlerInstance = Instantiate(waypointHandler) as WaypointHandler;
 
-        blinkyInstance.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Blinky));
-        inkyInstance.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Inky));
-        pinkyInstance.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Pinky));
-        clydeInstance.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Clyde));
+        blinky.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Blinky));
+        inky.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Inky));
+        pinky.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Pinky));
+        clyde.Initialize(waypointHandlerInstance.GetWaypoints(GhostType.Clyde));
 
-        ghosts.Add(blinkyInstance);
-        ghosts.Add(inkyInstance);
-        ghosts.Add(pinkyInstance);
-        ghosts.Add(clydeInstance);
+        ghosts.Add(blinky);
+        ghosts.Add(inky);
+        ghosts.Add(pinky);
+        ghosts.Add(clyde);
     }
 
 	void Update () {
-	    if(disabled)
-        {
-            DisableGhosts();
-
-        } else
-        {
-            EnableGhosts();
-        }
+	    
 	}
 
-    void DisableGhosts()
+    public void Pause()
     {
         ghosts.ForEach(delegate (Ghost ghost)
         {
-            if (!ghost.isDisabled)
-            {
-                ghost.Disable();
-            }
+            ghost.Pause();
         });
     }
 
-    void EnableGhosts()
+    public void Resume()
     {
         ghosts.ForEach(delegate (Ghost ghost)
         {
-            if (ghost.isDisabled)
-            {
-                ghost.Enable();
-            }
+            ghost.Resume();
         });
+    }
+
+    public void Destory()
+    {
+        ghosts.ForEach(delegate (Ghost ghost)
+        {
+            Destroy(ghost.gameObject);
+        });
+
+        Destroy(waypointHandlerInstance.gameObject);
     }
 }

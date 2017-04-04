@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using System;
+
 public class Pacman : MonoBehaviour {
     public float speed = 0.4f;
+    public int lives = 3;
     Vector2 dest = Vector2.zero;
+
+    bool isPaused = false;
+
+    Action pacmanHit;
 
     void Start()
     {
@@ -12,6 +19,11 @@ public class Pacman : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if(isPaused)
+        {
+            return;
+        }
+
         // Move closer to Destination
         Vector2 p = Vector2.MoveTowards(transform.position, dest, speed);
         GetComponent<Rigidbody2D>().MovePosition(p);
@@ -50,8 +62,27 @@ public class Pacman : MonoBehaviour {
         return (hit.collider == GetComponent<Collider2D>());
     }
 
+    public void Initialize(Action pacmanHit)
+    {
+        this.pacmanHit = pacmanHit;
+    }
+
+    public void Pause()
+    {
+        isPaused = true;
+    }
+
+    public void Resume()
+    {
+        isPaused = false;
+    }
+
     void OnTriggerEnter2D(Collider2D co)
     {
-        Debug.Log("Colliding with " + co.name);
+        if(co.tag.Equals("ghost"))
+        {
+            lives--;
+            pacmanHit();
+        }
     }
 }

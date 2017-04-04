@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public static class MazeUtil {
     public static MazeCoordinatesDto getMazeCoordinates()
     {
-        IntVector2[,] pacdotCoords = new IntVector2[100, 100];
-        IntVector2 initialPosition = new IntVector2(2, 2);
+        IntVector2[,] pacdotCoords = new IntVector2[100, 100]; //Any size large enough to fill the whole maze
+        IntVector2 initialPosition = new IntVector2(2, 2); //bottom left
         MazeDirection currentDirection = MazeDirection.North;
 
         FFDiscoverMaze(initialPosition, currentDirection, pacdotCoords);

@@ -7,7 +7,7 @@ public class Ghost : MonoBehaviour {
 
     public float speed = 0.3f;
 
-    public bool isDisabled = false;
+    public bool isPaused = false;
 
     public void Initialize(List<Transform> waypoints)
     {
@@ -16,7 +16,7 @@ public class Ghost : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (isDisabled)
+        if (isPaused)
         {
             return;
         }
@@ -41,17 +41,19 @@ public class Ghost : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D co)
     {
-        if (co.name.Contains("Pacman"))
-            Destroy(co.gameObject);
+        if (co.tag.Equals("pacman"))
+        {
+            //this is where pacman might do something to the ghost
+        }
     }
 
-    public void Disable()
+    public void Pause()
     {
-        isDisabled = true;
+        isPaused = true;
     }
 
-    public void Enable()
+    public void Resume()
     {
-        isDisabled = false;
+        isPaused = false;
     }
 }
